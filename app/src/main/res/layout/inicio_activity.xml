@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo">
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/sudo" />
+
+    <Button
+        android:id="@+id/inicioBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="250dp"
+        android:text="Iniciar"
+        android:textColor="#00FF09"
+        android:background="@android:color/transparent"
+        android:textSize="30dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/faster_one"/>
+    <Button
+        android:id="@+id/exitBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Salir"
+        android:layout_marginVertical="30dp"
+        android:textColor="#FF0000"
+        android:background="@android:color/transparent"
+        android:textSize="30dp"
+        android:fontFamily="@font/faster_one"
+        android:layout_gravity="center"/>
+</LinearLayout>
