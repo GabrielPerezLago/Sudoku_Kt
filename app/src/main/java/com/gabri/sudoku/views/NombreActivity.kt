@@ -21,11 +21,9 @@ class NombreActivity: AppCompatActivity(){
 
         iniciar.setOnClickListener { e ->
             if (input.text.toString() != ""){
-               // val intent = Intent(this@NombreActivity, SudokuActivity::class.java)
+               val intent = Intent(this@NombreActivity, SudokuActivity::class.java)
                 JuegoObj.nombre = input.text.toString()
-                    var nom = JuegoObj.nombre
-                dUtils.insertExitDialog(this, "Esto va "  + nom)
-                //startActivity(intent)
+                startActivity(intent)
             } else {
                 dUtils.insertErrDialog(this, "Debes Insertar un nombre para empezar")
             }

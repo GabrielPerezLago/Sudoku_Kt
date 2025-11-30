@@ -1,8 +1,10 @@
 package com.gabri.sudoku.utils
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.gabri.sudoku.views.InicioActivity
 import kotlin.system.exitProcess
 
 
@@ -48,6 +50,23 @@ class DialogUtils {
         dialog.setPositiveButton("Aceptar"){ _, _ ->
             contex.finishAffinity()
             exitProcess(0)
+
+        }
+
+        dialog.setNegativeButton("Cancelar") { dialog, _ ->
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    fun insertBackInicioDialog(context: AppCompatActivity, str: String) {
+        val dialog = AlertDialog.Builder(context)
+        dialog.setTitle("Info")
+        dialog.setMessage(str)
+
+        dialog.setPositiveButton("Aceptar"){ _, _ ->
+            var intent = Intent(context, InicioActivity::class.java)
+            context.startActivity(intent)
 
         }
 

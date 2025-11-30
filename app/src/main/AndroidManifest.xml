@@ -32,6 +32,7 @@
 
         <activity android:name=".views.ModeActivity" android:theme="@style/Theme.Sudoku"/>
         <activity android:name=".views.NombreActivity" android:theme="@style/Theme.Sudoku"/>
+        <activity android:name=".views.SudokuActivity" android:theme="@style/Theme.Sudoku"/>
     </application>
 
 </manifest>
