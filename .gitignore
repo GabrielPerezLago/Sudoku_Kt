@@ -15,3 +15,5 @@
 local.properties
 ./Backend/package-lock.json
 ./Backend/node_modules
+./Backend/.env
+./Backend/mongo-data
