@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+./Backend/package-lock.json
+./Backend/node_modules

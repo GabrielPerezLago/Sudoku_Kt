@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.window.Dialog
 import com.gabri.sudoku.views.InicioActivity
 import kotlin.system.exitProcess
 
@@ -59,9 +60,9 @@ class DialogUtils {
         dialog.show()
     }
 
-    fun insertBackInicioDialog(context: AppCompatActivity, str: String) {
+    fun insertBackInicioDialog(context: AppCompatActivity, tittle: String, str: String, negativeBtn: Boolean = true) {
         val dialog = AlertDialog.Builder(context)
-        dialog.setTitle("Info")
+        dialog.setTitle(tittle)
         dialog.setMessage(str)
 
         dialog.setPositiveButton("Aceptar"){ _, _ ->
@@ -70,9 +71,12 @@ class DialogUtils {
 
         }
 
-        dialog.setNegativeButton("Cancelar") { dialog, _ ->
-            dialog.dismiss()
+        if (negativeBtn) {
+            dialog.setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.dismiss()
+            }
         }
         dialog.show()
     }
+
 }

@@ -1,8 +1,6 @@
 package com.gabri.sudoku.views
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.Button
 import android.widget.GridLayout
 import android.widget.LinearLayout
@@ -13,6 +11,8 @@ import com.gabri.sudoku.controller.SudokuController
 import com.gabri.sudoku.objects.JuegoObj
 import com.gabri.sudoku.utils.ContadorUtils
 import com.gabri.sudoku.utils.DialogUtils
+import kotlin.Array
+import kotlin.IntArray
 
 class SudokuActivity: AppCompatActivity() {
     private val dUtils: DialogUtils = DialogUtils()
@@ -48,21 +48,33 @@ class SudokuActivity: AppCompatActivity() {
         tablero.forEach { it.fill(0) }
         sController.genTablero(tablero)
         print(tablero)
-        hiddenTbl = sController.ocultarCeldas(tablero, celdasWithMode)
+        hiddenTbl = sController.ocultarCeldas(tablero, 1)
 
         /* Renderizar Tablero */
         tblLayout.removeAllViews()
         var tRenderizado: GridLayout = sController.renderGridTablero(this@SudokuActivity, hiddenTbl)
-
-
         tblLayout.addView(tRenderizado)
+
+
+        this.comprobarListener(comprobarBtn, tRenderizado, tablero)
     }
 
     private fun rendirseListener(btn: Button) {
-        btn.setOnClickListener { e ->
-            dUtils.insertBackInicioDialog(this@SudokuActivity,
-                "¿ Estas seguro de que quieres salir , perderas todo el progreso ?")
+        btn.setOnClickListener { listener ->
+            dUtils.insertBackInicioDialog(this@SudokuActivity, "Info", "¿ Estas seguro de que quieres salir , perderas todo el progreso ?")
         }
+    }
+
+
+    private fun comprobarListener(btn: Button, hidden: GridLayout, tbl: Array<IntArray>) {
+        btn.setOnClickListener { listener ->
+            val juegoTbl: Array<IntArray> = sController.parseGrid(hidden)
+
+            if (sController.compareTableros(juegoTbl, tablero)) {
+                dUtils.insertBackInicioDialog(this, "¡Enorabuena!", "¡Has completado el sudoku!", false)
+            } else {
+                dUtils.insertErrDialog(this@SudokuActivity, "Todavía no está bien…")
+            } }
     }
 
 

@@ -1,13 +1,14 @@
 package com.gabri.sudoku.controller
 
+import android.graphics.drawable.GradientDrawable
+import android.text.InputFilter
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.core.LinearEasing
+import androidx.compose.ui.graphics.Color
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 
 class SudokuController {
 
@@ -125,12 +126,21 @@ class SudokuController {
                 txtInput.setPadding(10,10,10,10)
                 txtInput.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 txtInput.setBackgroundResource(android.R.drawable.edit_text)
-                txtInput.setTextColor(android.graphics.Color.BLACK)
+                txtInput.setTextColor(android.graphics.Color.parseColor("#10FE18"))
+
+
+                val border = GradientDrawable()
+                border.setStroke(3, android.graphics.Color.parseColor("#10FE18"))
+                border.cornerRadius = 8f
+                txtInput.background = border
 
                 if (tbl[i][j] != 0) {
                     txtInput.setText(tbl[i][j].toString())
                     txtInput.isEnabled = false
                 } else {
+                    txtInput.inputType = android.text.InputType.TYPE_CLASS_NUMBER
+                    txtInput.filters = arrayOf(InputFilter.LengthFilter(1))
+                    txtInput.setTextColor(android.graphics.Color.parseColor("#005EF5"))
                     txtInput.setText("")
                     txtInput.isEnabled = true
                 }
@@ -150,4 +160,29 @@ class SudokuController {
         return grid
     }
 
+    fun compareTableros(hidden: Array<IntArray>, tbl: Array<IntArray>): Boolean {
+        for (i in 0 until tbl.size) {
+            for (j in 0 until tbl[i].size) {
+                if (hidden[i][j] != tbl[i][j]) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    fun parseGrid(grid: GridLayout): Array<IntArray> {
+        val arr = Array(9) { IntArray(9) }
+
+        for (i in 0 until 9) {
+            for (j in 0 until 9) {
+                val index = i * 9 + j
+                val view = grid.getChildAt(index) as TextInputEditText
+                val txt = view.text.toString()
+
+                arr[i][j] = if (txt.isNotEmpty()) txt.toInt() else 0
+            }
+        }
+        return arr
+    }
 }
