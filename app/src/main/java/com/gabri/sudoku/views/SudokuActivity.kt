@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.gabri.sudoku.R
+import com.gabri.sudoku.controller.JuegoPuntuacionesController
 import com.gabri.sudoku.controller.SudokuController
 import com.gabri.sudoku.model.JuegoModel
 import com.gabri.sudoku.objects.JuegoObj
@@ -19,6 +20,7 @@ import kotlin.Array
 import kotlin.IntArray
 
 class SudokuActivity: AppCompatActivity() {
+    private val jController: JuegoPuntuacionesController = JuegoPuntuacionesController()
     private val client: ApiClient = ApiClient()
     private val dUtils: DialogUtils = DialogUtils()
     private val cUtils: ContadorUtils = ContadorUtils()
@@ -45,6 +47,7 @@ class SudokuActivity: AppCompatActivity() {
         val pistaBtn: Button = findViewById<Button>(R.id.pistaBtn)
         val rendirse: Button = findViewById<Button>(R.id.retreatBtn)
 
+
         nombreLbl.text = JuegoObj.nombre
         this.rendirseListener(rendirse)
         cUtils.iniciarContador(tiempoLbl)
@@ -54,7 +57,7 @@ class SudokuActivity: AppCompatActivity() {
         tablero.forEach { it.fill(0) }
         sController.genTablero(tablero)
         print(tablero)
-        hiddenTbl = sController.ocultarCeldas(tablero, 1)
+        hiddenTbl = sController.ocultarCeldas(tablero, celdasWithMode)
 
         /* Renderizar Tablero */
         tblLayout.removeAllViews()
@@ -78,22 +81,19 @@ class SudokuActivity: AppCompatActivity() {
 
             if (sController.compareTableros(juegoTbl, tablero)) {
                 JuegoObj.tiempo = cUtils.getTiempo()
-                model = JuegoModel(
-                    nombre = JuegoObj.nombre,
-                    tiempo = JuegoObj.tiempo,
-                    dificultad = JuegoObj.mode
-                )
                 lifecycleScope.launch {
                     try {
-                        val respose = client.apiService.createPuntuaciones(model)
-
+                        val res = jController.postPuntuaciones(JuegoObj)
                     } catch (ex: Exception) {
                         ex.printStackTrace()
                     }
                 }
-                dUtils.insertBackInicioDialog(this, "¡Enorabuena!", "¡Has completado el sudoku!", false)
+                dUtils.insertBackInicioDialog(this, "¡Enorabuena!", "¡Has completado el sudoku!",)
 
             } else {
+                if(JuegoObj.mode == "facil" || JuegoObj.mode == "medio") {
+                    sController.marcarCeldas(hidden, juegoTbl, tablero)
+                }
                 dUtils.insertErrDialog(this@SudokuActivity, "Todavía no está bien…")
             }
         }

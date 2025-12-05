@@ -66,53 +66,6 @@ class SudokuController {
 
         return hidden
     }
-
-    fun renderTablero(context: AppCompatActivity ,tbl: Array<IntArray>): LinearLayout {
-        val layout = LinearLayout(context)
-        layout.removeAllViews()
-        layout.layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            WRAP_CONTENT
-        )
-
-        for(i in 0 until tbl.size) {
-            val filas = LinearLayout(context)
-            filas.orientation = LinearLayout.HORIZONTAL
-            filas.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                WRAP_CONTENT
-            )
-
-            for (j in 0 until tbl[i].size) {
-                //val textLayout = TextInputLayout(context)
-                //textLayout.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,WRAP_CONTENT, 1f)
-
-
-                val txtInput = TextInputEditText(context)
-                txtInput.layoutParams = LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f)
-                txtInput.textSize= 18f
-                txtInput.setPadding(20, 20, 20, 20)
-                txtInput.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-
-
-                if (tbl[i][j] != 0) {
-                    txtInput.setText(tbl[i][j].toString())
-                    txtInput.isEnabled = false
-
-                } else {
-                    txtInput.setText("")
-                    txtInput.isEnabled = true
-                }
-                print(tbl[i][j])
-                //textLayout.addView(txtInput)
-                filas.addView(txtInput)
-            }
-            layout.addView(filas)
-            println()
-        }
-        return layout
-    }
-
     fun renderGridTablero(context: AppCompatActivity, tbl: Array<IntArray>): GridLayout {
         val grid = GridLayout(context)
         grid.rowCount = 9
@@ -184,5 +137,30 @@ class SudokuController {
             }
         }
         return arr
+    }
+
+    private fun catchErrCeldas(hidden: Array<IntArray>, tbl: Array<IntArray>): List<Pair<Int, Int>> {
+        val err = mutableListOf<Pair<Int, Int>>()
+
+        for(i in 0 until tbl.size){
+            for(j in 0 until tbl[i].size){
+                val vlue = hidden[i][j]
+
+                if(vlue != 0 && vlue != tbl[i][j]){
+                    err.add(Pair(i, j))
+                }
+
+            }
+        }
+        return err
+    }
+
+    fun marcarCeldas(grid: GridLayout, hidden: Array<IntArray>, tbl: Array<IntArray>) {
+        val err = this.catchErrCeldas(hidden, tbl)
+        for ((f, c) in err){
+            val index = f * 9 + c
+            val celda = grid.getChildAt(index) as TextInputEditText
+            celda.setTextColor(android.graphics.Color.RED)
+        }
     }
 }

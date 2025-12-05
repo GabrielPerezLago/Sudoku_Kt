@@ -21,13 +21,18 @@ class DialogUtils {
      *
      * @return Dialog
      */
-    fun insertErrDialog(context: AppCompatActivity, errString: String){
+    fun insertErrDialog(context: AppCompatActivity, errString: String, isBack: Boolean = false){
         val dialog = AlertDialog.Builder(context)
         dialog.setTitle("Errror:")
         dialog.setMessage(errString)
 
         dialog.setPositiveButton("Aceptar") {dialog, _ ->
-            dialog.dismiss()
+            if (isBack) {
+                val intent = Intent(context, InicioActivity::class.java)
+                context.startActivity(intent)
+            } else {
+                dialog.dismiss()
+            }
         }
         dialog.show()
     }
@@ -76,6 +81,18 @@ class DialogUtils {
                 dialog.dismiss()
             }
         }
+        dialog.show()
+    }
+
+    fun insertInfoDialog(context: AppCompatActivity, strTittle: String, str: String) {
+        val dialog = AlertDialog.Builder(context)
+        dialog.setTitle("Info")
+        dialog.setMessage(str)
+
+        dialog.setNegativeButton("Aceptar"){ d, _ ->
+            d.dismiss()
+        }
+
         dialog.show()
     }
 

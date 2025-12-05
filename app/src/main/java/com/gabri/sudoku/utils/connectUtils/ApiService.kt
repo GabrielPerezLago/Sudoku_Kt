@@ -13,5 +13,5 @@ interface ApiService {
     suspend fun getPutuaciones(@Query("dificultad") dificultad: String): List<JuegoModel>
 
     @POST("puntuaciones")
-    fun createPuntuaciones(@Body puntuaciones: JuegoModel): Response<JuegoModel>
+    suspend fun createPuntuaciones(@Body puntuaciones: JuegoModel): Response<JuegoModel>
 }
