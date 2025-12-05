@@ -6,19 +6,25 @@ import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.gabri.sudoku.R
 import com.gabri.sudoku.controller.SudokuController
+import com.gabri.sudoku.model.JuegoModel
 import com.gabri.sudoku.objects.JuegoObj
 import com.gabri.sudoku.utils.ContadorUtils
 import com.gabri.sudoku.utils.DialogUtils
+import com.gabri.sudoku.utils.connectUtils.ApiClient
+import kotlinx.coroutines.launch
 import kotlin.Array
 import kotlin.IntArray
 
 class SudokuActivity: AppCompatActivity() {
+    private val client: ApiClient = ApiClient()
     private val dUtils: DialogUtils = DialogUtils()
     private val cUtils: ContadorUtils = ContadorUtils()
     private val sController: SudokuController = SudokuController()
     private val tablero = Array(9) { IntArray(9) }
+    private lateinit var model: JuegoModel;
     private lateinit var  hiddenTbl: Array<IntArray>
 
     private var celdasWithMode: Int = when(JuegoObj.mode) {
@@ -71,10 +77,26 @@ class SudokuActivity: AppCompatActivity() {
             val juegoTbl: Array<IntArray> = sController.parseGrid(hidden)
 
             if (sController.compareTableros(juegoTbl, tablero)) {
+                JuegoObj.tiempo = cUtils.getTiempo()
+                model = JuegoModel(
+                    nombre = JuegoObj.nombre,
+                    tiempo = JuegoObj.tiempo,
+                    dificultad = JuegoObj.mode
+                )
+                lifecycleScope.launch {
+                    try {
+                        val respose = client.apiService.createPuntuaciones(model)
+
+                    } catch (ex: Exception) {
+                        ex.printStackTrace()
+                    }
+                }
                 dUtils.insertBackInicioDialog(this, "¡Enorabuena!", "¡Has completado el sudoku!", false)
+
             } else {
                 dUtils.insertErrDialog(this@SudokuActivity, "Todavía no está bien…")
-            } }
+            }
+        }
     }
 
 

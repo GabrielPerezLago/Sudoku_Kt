@@ -29,4 +29,8 @@ class ContadorUtils {
         val secs = seconds % 60
         return String.format("%02d:%02d", minutes, secs)
     }
+
+    fun getTiempo(): String {
+        return formatTime(segundos)
+    }
 }

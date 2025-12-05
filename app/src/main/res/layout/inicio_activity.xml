@@ -24,11 +24,23 @@
         android:layout_gravity="center"
         android:fontFamily="@font/faster_one"/>
     <Button
+        android:id="@+id/puntuacionesBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Ranking"
+        android:textColor="#005EF5"
+        android:background="@android:color/transparent"
+        android:textSize="30dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/faster_one"/>
+
+    <Button
         android:id="@+id/exitBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Salir"
-        android:layout_marginVertical="30dp"
+        android:layout_marginVertical="20dp"
         android:textColor="#FF0000"
         android:background="@android:color/transparent"
         android:textSize="30dp"
