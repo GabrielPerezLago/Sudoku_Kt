@@ -1,6 +1,8 @@
 package com.gabri.sudoku.views
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.GridLayout
 import android.widget.LinearLayout
@@ -47,7 +49,10 @@ class SudokuActivity: AppCompatActivity() {
         val pistaBtn: Button = findViewById<Button>(R.id.pistaBtn)
         val rendirse: Button = findViewById<Button>(R.id.retreatBtn)
 
-
+        if(JuegoObj.mode == "medio" || JuegoObj.mode == "dificil") {
+            pistaBtn.isEnabled = false
+            pistaBtn.visibility = View.INVISIBLE
+        }
         nombreLbl.text = JuegoObj.nombre
         this.rendirseListener(rendirse)
         cUtils.iniciarContador(tiempoLbl)
@@ -66,6 +71,8 @@ class SudokuActivity: AppCompatActivity() {
 
 
         this.comprobarListener(comprobarBtn, tRenderizado, tablero)
+
+        this.pistaListener(pistaBtn, tRenderizado, tablero)
     }
 
     private fun rendirseListener(btn: Button) {
@@ -77,7 +84,7 @@ class SudokuActivity: AppCompatActivity() {
 
     private fun comprobarListener(btn: Button, hidden: GridLayout, tbl: Array<IntArray>) {
         btn.setOnClickListener { listener ->
-            val juegoTbl: Array<IntArray> = sController.parseGrid(hidden)
+            val juegoTbl: Array<IntArray> = this.parseGrid(hidden)
 
             if (sController.compareTableros(juegoTbl, tablero)) {
                 JuegoObj.tiempo = cUtils.getTiempo()
@@ -97,6 +104,21 @@ class SudokuActivity: AppCompatActivity() {
                 dUtils.insertErrDialog(this@SudokuActivity, "Todavía no está bien…")
             }
         }
+    }
+
+    private fun pistaListener(btn: Button, grid: GridLayout, tbl: Array<IntArray>){
+        btn.setOnClickListener {
+            val pista = sController.insertarPista(grid, hiddenTbl, tbl)
+            if (pista) {
+                JuegoObj.pista++
+            } else {
+                Log.d("Sudoku", "No quedan celdas para pista")
+            }
+        }
+    }
+
+    private fun parseGrid(grid: GridLayout): Array<IntArray> {
+        return sController.parseGrid(grid)
     }
 
 

@@ -2,6 +2,7 @@ package com.gabri.sudoku.controller
 
 import android.graphics.drawable.GradientDrawable
 import android.text.InputFilter
+import android.util.Log
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.GridLayout
 import android.widget.LinearLayout
@@ -83,7 +84,7 @@ class SudokuController {
 
 
                 val border = GradientDrawable()
-                border.setStroke(3, android.graphics.Color.parseColor("#10FE18"))
+                border.setStroke(5, android.graphics.Color.parseColor("#007704"))
                 border.cornerRadius = 8f
                 txtInput.background = border
 
@@ -93,7 +94,7 @@ class SudokuController {
                 } else {
                     txtInput.inputType = android.text.InputType.TYPE_CLASS_NUMBER
                     txtInput.filters = arrayOf(InputFilter.LengthFilter(1))
-                    txtInput.setTextColor(android.graphics.Color.parseColor("#005EF5"))
+                    txtInput.setTextColor(android.graphics.Color.parseColor("#8EB9FF"))
                     txtInput.setText("")
                     txtInput.isEnabled = true
                 }
@@ -139,7 +140,7 @@ class SudokuController {
         return arr
     }
 
-    private fun catchErrCeldas(hidden: Array<IntArray>, tbl: Array<IntArray>): List<Pair<Int, Int>> {
+    private fun catchCeldas(hidden: Array<IntArray>, tbl: Array<IntArray>): List<Pair<Int, Int>> {
         val err = mutableListOf<Pair<Int, Int>>()
 
         for(i in 0 until tbl.size){
@@ -156,11 +157,57 @@ class SudokuController {
     }
 
     fun marcarCeldas(grid: GridLayout, hidden: Array<IntArray>, tbl: Array<IntArray>) {
-        val err = this.catchErrCeldas(hidden, tbl)
+        val err = this.catchCeldas(hidden, tbl)
         for ((f, c) in err){
             val index = f * 9 + c
             val celda = grid.getChildAt(index) as TextInputEditText
             celda.setTextColor(android.graphics.Color.RED)
         }
+    }
+    //Con esto capturo una celda random
+    private fun capturarCelda(hidden: Array<IntArray>, tbl: Array<IntArray>): Pair<Int, Int>? {
+        val celdas = mutableListOf<Pair<Int, Int>>()
+        for(i in 0 until tbl.size){
+            for (j in 0 until tbl[i].size ) {
+                val hValue = hidden[i][j]
+                val tValue = tbl[i][j]
+
+                if(hValue == 0 || hValue != tValue){
+                    celdas.add(Pair(i, j))
+                }
+            }
+        }
+
+        if (celdas.isEmpty()){
+            return null
+        }
+
+        return celdas.random()
+    }
+
+    fun insertarPista(grid: GridLayout, hidden: Array<IntArray>, tbl: Array<IntArray>): Boolean {
+        val celda: Pair<Int, Int>? = this.capturarCelda(hidden, tbl)
+
+        if (celda == null) return false
+
+        val (fila, col) = celda
+        val nCelda = fila * 9 + col
+
+        if (nCelda >= grid.childCount) {
+            Log.e("Sudoku", "Índice fuera de rango: $nCelda")
+            return false
+        }
+
+        val gridCel = grid.getChildAt(nCelda) as TextInputEditText
+        val valorSolucion = tbl[fila][col]
+
+        gridCel.setText(valorSolucion)
+        gridCel.isEnabled = false
+        gridCel.setTextColor(android.graphics.Color.parseColor("#10FE18"))
+
+        hidden[fila][col] = valorSolucion
+
+        return true
+
     }
 }

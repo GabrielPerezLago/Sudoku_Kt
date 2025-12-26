@@ -6,4 +6,5 @@ object JuegoObj {
     var mode: String = ""
     var nombre: String = ""
     var tiempo: String = ""
+    var pista: Int = 0
 }
