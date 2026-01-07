@@ -1,0 +1,14 @@
+Como utilizar la app :
+
+La conexion a la api de la aplicación del sudoku requiere un cambio en el codigo:
+
+- Es necesario cambiar la direccion IP que se encuentra en la clase ApiService que se encuentra en
+    com/gabri/sudoku/utils/connectUtils/ApiService en BASE_URL.
+
+Una vez insertada cambiada la direccion IP por la de tu equipo hay que levantar la api la cual esta diseñada
+con Kotlin usando SpringBoot. Se encuentra en este repositorio : https://github.com/GabrielPerezLago/Sudoku_Sping_Api.git
+
+Cuando se clone el repositorio hay que levantar la base de datos la cual solo es necerasio levantarla usando el archivo
+docker-compose.yml el cual implementa la base de datos automaticamente y la apì deberia funcionar.
+
+/*** Esto es todo lo necesario para que la app del sudoku funcione ***/
