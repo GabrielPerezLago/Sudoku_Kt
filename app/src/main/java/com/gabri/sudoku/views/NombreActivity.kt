@@ -25,18 +25,17 @@ class NombreActivity: AppCompatActivity(){
         val iniciar: Button = findViewById<Button>(R.id.iniciarBtn)
 
         inpLayout.apply {
-            boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_OUTLINE
-            setBoxStrokeColor(Color.parseColor("#10FE18")) // borde verde
-            setBoxBackgroundColor(Color.TRANSPARENT) // fondo transparente
+            setBoxStrokeColor(Color.parseColor("#007704")) // borde verde
+            setBoxBackgroundColor(Color.RED) // fondo transparente
             setBoxCornerRadii(12f, 12f, 12f, 12f)
         }
 
         input.apply {
-            setTextColor(Color.parseColor("#10FE18"))
-            setHintTextColor(Color.parseColor("#10FE18"))
+            setTextColor(Color.BLACK)
+            setHintTextColor(Color.parseColor("#007704"))
             textAlignment = TextInputEditText.TEXT_ALIGNMENT_CENTER
             textSize = 18f
-            setBackgroundColor(Color.TRANSPARENT) // quitar fondo predeterminado
+            setBackgroundColor(Color.parseColor("#007704"))
             isCursorVisible = true
         }
         iniciar.setOnClickListener { e ->
